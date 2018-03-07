@@ -1,0 +1,107 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="glsl">
+      <UniqueIdentifier>{d732d226-d300-47e9-aa77-f28949c31330}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="objects">
+      <UniqueIdentifier>{903d9157-408f-4e22-8cec-a5d89b891e51}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="resrouces">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="renderer">
+      <UniqueIdentifier>{4d6c1764-519b-4f6a-9196-8c22c823d41c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="input">
+      <UniqueIdentifier>{8a9927fa-708e-4934-b7d6-a782035cb651}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="collision">
+      <UniqueIdentifier>{6bbf6a3d-d2f7-4201-bb38-923d5d7d8280}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="MResourceLoader.hpp">
+      <Filter>resrouces</Filter>
+    </ClInclude>
+    <ClInclude Include="Data\SpineData.hpp">
+      <Filter>resrouces</Filter>
+    </ClInclude>
+    <ClInclude Include="Data\shader.hpp">
+      <Filter>resrouces</Filter>
+    </ClInclude>
+    <ClInclude Include="Data\texture.hpp">
+      <Filter>resrouces</Filter>
+    </ClInclude>
+    <ClInclude Include="FontLoader.hpp">
+      <Filter>resrouces</Filter>
+    </ClInclude>
+    <ClInclude Include="Objects\MImage.hpp">
+      <Filter>objects</Filter>
+    </ClInclude>
+    <ClInclude Include="Objects\MText.hpp">
+      <Filter>objects</Filter>
+    </ClInclude>
+    <ClInclude Include="Objects\MSpineObject.hpp">
+      <Filter>objects</Filter>
+    </ClInclude>
+    <ClInclude Include="Objects\MSpriteSheetAnimation.hpp">
+      <Filter>objects</Filter>
+    </ClInclude>
+    <ClInclude Include="Objects\MQuad.hpp">
+      <Filter>objects</Filter>
+    </ClInclude>
+    <ClInclude Include="Objects\MObject.hpp">
+      <Filter>objects</Filter>
+    </ClInclude>
+    <ClInclude Include="Objects\MMesh.hpp">
+      <Filter>objects</Filter>
+    </ClInclude>
+    <ClInclude Include="Objects\MButton.hpp">
+      <Filter>objects</Filter>
+    </ClInclude>
+    <ClInclude Include="MRenderQueue.hpp">
+      <Filter>renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="MInputState.hpp">
+      <Filter>input</Filter>
+    </ClInclude>
+    <ClInclude Include="MInput.hpp">
+      <Filter>input</Filter>
+    </ClInclude>
+    <ClInclude Include="MCollisionCalculator.hpp">
+      <Filter>collision</Filter>
+    </ClInclude>
+    <ClInclude Include="Collider\MCollider.hpp">
+      <Filter>collision</Filter>
+    </ClInclude>
+    <ClInclude Include="game.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Shaders\text_vertex.glsl">
+      <Filter>glsl</Filter>
+    </None>
+    <None Include="Shaders\default_fragment.glsl">
+      <Filter>glsl</Filter>
+    </None>
+    <None Include="Shaders\default_vertex.glsl">
+      <Filter>glsl</Filter>
+    </None>
+    <None Include="Shaders\mesh_fragment.glsl">
+      <Filter>glsl</Filter>
+    </None>
+    <None Include="Shaders\mesh_vertex.glsl">
+      <Filter>glsl</Filter>
+    </None>
+    <None Include="Shaders\spritesheet_fragment.glsl">
+      <Filter>glsl</Filter>
+    </None>
+    <None Include="Shaders\spritesheet_vertex.glsl">
+      <Filter>glsl</Filter>
+    </None>
+    <None Include="Shaders\text_fragment.glsl">
+      <Filter>glsl</Filter>
+    </None>
+  </ItemGroup>
+</Project>

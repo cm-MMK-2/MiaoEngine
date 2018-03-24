@@ -194,6 +194,11 @@ private:
 		std::wstring::const_iterator i;
 		for (i = text.begin(); i != text.end(); i++)
 		{
+			if (*i == 32)//blank
+			{
+				_x += (slot->advance.x >> 6);
+				continue;
+			}
 			if (FT_Load_Char(face, *i, FT_LOAD_RENDER))
 			{
 				std::cout << "ERROR::FREETYTPE: Failed to load Glyph" << std::endl;
@@ -203,7 +208,7 @@ private:
 			GLuint h = slot->bitmap.rows;
 			GLuint _y = gt - slot->bitmap_top;
 			glTexSubImage2D(GL_TEXTURE_2D, 0, _x, _y, w, h, GL_RED, GL_UNSIGNED_BYTE, slot->bitmap.buffer);
-			_x += (slot->advance.x >> 6); // 64
+			_x += w;//(slot->advance.x >> 6); // 64
 		}
 
 		glBindTexture(GL_TEXTURE_2D, 0);

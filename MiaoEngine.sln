@@ -5,7 +5,7 @@ VisualStudioVersion = 15.0.26730.15
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Miao.Core", "Miao.Core\Miao.Core.vcxproj", "{3C87907C-C201-4D82-A4A2-AA372CACBE49}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Miao.Game", "MiaoGame\MiaoGame.vcxproj", "{98EC12FA-FB55-40C5-9D9F-D5204726F969}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Miao.Game", "Miao.Game\Miao.Game.vcxproj", "{98EC12FA-FB55-40C5-9D9F-D5204726F969}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

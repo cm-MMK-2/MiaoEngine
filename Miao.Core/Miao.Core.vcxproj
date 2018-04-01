@@ -143,7 +143,9 @@
     <ClInclude Include="MRenderQueue.hpp" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Shaders\default_fragment.glsl" />
+    <None Include="Shaders\default_fragment.glsl">
+      <DeploymentContent>false</DeploymentContent>
+    </None>
     <None Include="Shaders\default_vertex.glsl" />
     <None Include="Shaders\mesh_fragment.glsl" />
     <None Include="Shaders\mesh_vertex.glsl" />

@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include <game.hpp>
 
 extern Game* game;
@@ -22,10 +22,11 @@ public:
 		//render text test
 		//MText* fpsCounter = game->renderer.CreateText(notoSans, L"", Rect(0, 0, 200, 30), 16, glm::vec3(0.5, 0.8f, 0.2f), &textShader, GL_STREAM_DRAW);
 		game->renderer.CreateText(noto, L"ABCabc", Rect(0, 0, 200, 30), 12, glm::vec3(0.5f, 0.8f, 0.2f), &textShader);
-		game->renderer.CreateText(noto, L"¼òÌå×Ö²âÊÔ", Rect(200, 0, 200, 30), 12, glm::vec3(0.5f, 0.8f, 0.2f), &textShader);
-		game->renderer.CreateText(noto, L"·±ów×ÖœyÔ‡", Rect(400, 0, 200, 30), 12, glm::vec3(0.5f, 0.8f, 0.2f), &textShader);
-		game->renderer.CreateText(noto, L"ÈÕ±¾ÕZ¥Æ¥¹¥È", Rect(600, 0, 200, 30), 12, glm::vec3(0.5f, 0.8f, 0.2f), &textShader);
-		game->renderer.CreateText(noto, L"Spine And Input Test: ¡û:Run(Left) ¡ú:Run(Right) ¡ü:Jump ¡ý:Lie Down", Rect(0, 380, 600, 30), 12, glm::vec3(0.5f, 0.8f, 0.2f), &textShader);
+		game->renderer.CreateText(noto, L"ç®€ä½“å­—æµ‹è¯•", Rect(200, 0, 200, 30), 12, glm::vec3(0.5f, 0.8f, 0.2f), &textShader);
+		game->renderer.CreateText(noto, L"ç¹é«”å­—æ¸¬è©¦", Rect(400, 0, 200, 30), 12, glm::vec3(0.5f, 0.8f, 0.2f), &textShader);
+		game->renderer.CreateText(noto, L"æ—¥æœ¬èªžãƒ†ã‚¹ãƒˆ", Rect(600, 0, 200, 30), 12, glm::vec3(0.5f, 0.8f, 0.2f), &textShader);
+		game->renderer.CreateText(noto, L"í•œêµ­ì–´ì‹œí—˜", Rect(800, 0, 200, 30), 12, glm::vec3(0.5f, 0.8f, 0.2f), &textShader); 
+		game->renderer.CreateText(noto, L"Spine And Input Test: â†:Run(Left) â†’:Run(Right) â†‘:Jump â†“:Lie Down", Rect(0, 380, 600, 30), 12, glm::vec3(0.5f, 0.8f, 0.2f), &textShader);
 		game->renderer.CreateText(noto, L"Sprite Animation:", Rect(0, 60, 300, 30), 12, glm::vec3(0.5f, 0.8f, 0.2f), &textShader);
 		game->renderer.CreateText(noto, L"Scale & Rotation:", Rect(260, 60, 300, 30), 12, glm::vec3(0.5f, 0.8f, 0.2f), &textShader);
 		//load shader resources

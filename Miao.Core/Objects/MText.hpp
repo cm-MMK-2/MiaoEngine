@@ -12,7 +12,7 @@ public:
 	MText()
 	{
 	}
-	MText(FT_Face _face, std::wstring _text, Rect _rect, unsigned int _size, Vec3 _color, Shader* _shader, int _option, unsigned long _id)
+	MText(FT_Face _face, std::wstring _text, MRect _rect, unsigned int _size, Vec3 _color, Shader* _shader, int _option, unsigned long _id)
 	{
 		id = _id;
 		face = _face;
@@ -29,7 +29,7 @@ public:
 		glBindTexture(GL_TEXTURE_2D, 0);
 		glDeleteTextures(1, &texture);
 	}
-    inline void Draw(double dt)
+    void Draw(double dt)
 	{
 		shader.UseProgram();
 		// Render textured quad
@@ -191,10 +191,9 @@ private:
 
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RED, rect.w, rect.h, 0, GL_RED, GL_UNSIGNED_BYTE, 0);
 		glClearTexImage(texture, 0, GL_BGRA, GL_UNSIGNED_BYTE, &clearColor);
-		std::wstring::const_iterator i;
-		for (i = text.begin(); i != text.end(); i++)
+		for (auto & ch :text)
 		{
-			if (FT_Load_Char(face, *i, FT_LOAD_RENDER))
+			if (FT_Load_Char(face, ch, FT_LOAD_RENDER))
 			{
 				std::cout << "ERROR::FREETYTPE: Failed to load Glyph" << std::endl;
 				continue;

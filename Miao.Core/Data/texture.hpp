@@ -29,7 +29,7 @@ public:
 	}
 
 
-	Texture2D(Texture2D& copy) = delete;
+	Texture2D(const Texture2D& copy) = delete;
 
 	~Texture2D()
 	{

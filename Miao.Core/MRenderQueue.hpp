@@ -15,11 +15,6 @@
 #include "Objects/MSpineObject.hpp"
 
 /*
- *     ∧ ∧
- *　　( ﾟωﾟ)
- * ＿(_つ/￣￣￣/＿
- * 　 ＼/　　　/
- *	　　￣￣￣
  * render objects in queue
  */
 class MRenderQueue
@@ -53,7 +48,7 @@ public:
 	}
 
 	//add into map
-	MImage * CreateImage(Texture2D* texture, Rect rect, GLfloat rotation = 0.0f, glm::vec3 color = glm::vec3(1.0f), Shader* shader = nullptr)
+	MImage * CreateImage(Texture2D* texture, MRect rect, GLfloat rotation = 0.0f, glm::vec3 color = glm::vec3(1.0f), Shader* shader = nullptr)
 	{
 		if (!texture)
 		{
@@ -64,14 +59,14 @@ public:
 		return static_cast<MImage*>(objects[id].get());
 	}
 
-	MText * CreateText(FT_Face face, std::wstring text, Rect rect, int size, Vec3 color, Shader* shader = nullptr, int option = GL_STATIC_DRAW)
+	MText * CreateText(FT_Face face, std::wstring text, MRect rect, int size, Vec3 color, Shader* shader = nullptr, int option = GL_STATIC_DRAW)
 	{
 		unsigned long id = InterlockedIncrement(&indexCounter);
 		objects[id] = std::make_unique<MText>(face, text, rect, size, color, shader, option, id);
 		return static_cast<MText*>(objects[id].get());
 	}
 
-	MSpriteSheetAnimation * CreateSpriteSheetAnimation(Texture2D* texture, Rect rect, Vec2 block, GLfloat rotation = 0.0f, glm::vec3 color = glm::vec3(1.0f), Shader* shader = nullptr)
+	MSpriteSheetAnimation * CreateSpriteSheetAnimation(Texture2D* texture, MRect rect, Vec2 block, GLfloat rotation = 0.0f, glm::vec3 color = glm::vec3(1.0f), Shader* shader = nullptr)
 	{
 		if (!texture)
 		{

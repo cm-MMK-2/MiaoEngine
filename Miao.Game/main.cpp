@@ -4,5 +4,8 @@
 int main()
 {
 	GameApp gameApp;
-	return Game::Create(1280, 720, u8"Game", &gameApp);
+	if (Game::Create(1280, 720, &gameApp) == 0)
+	{
+		game->CreateGameWindow(u8"Game");
+	}
 }

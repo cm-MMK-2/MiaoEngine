@@ -18,27 +18,28 @@ struct Vecotr2
 	T y;
 };
 
-struct Rect
+class MRect
 {
+public:
 	float x;
 	float y;
 	float w;
 	float h;
-	Rect()
+	MRect()
 	{
 		x = 0;
 		y = 0;
 		w = 0;
 		h = 0;
 	}
-	Rect(Rect & _rect)
+	MRect(const MRect & _rect)
 	{
 		x = _rect.x;
 		y = _rect.y;
 		w = _rect.w;
 		h = _rect.h;
 	}
-	Rect(float _x, float _y, float _w, float _h)
+	MRect(float _x, float _y, float _w, float _h)
 	{
 		x = _x;
 		y = _y;

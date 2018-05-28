@@ -5,7 +5,7 @@ class MImage :public MQuad
 {
 public:
 	MImage(const MImage & copy) = delete;
-	MImage(Texture2D* _texture, Rect _rect, GLfloat _rotation, glm::vec3 _color, Shader* _shader, unsigned long _id)
+	MImage(Texture2D* _texture, MRect _rect, GLfloat _rotation, glm::vec3 _color, Shader* _shader, unsigned long _id)
 	{
 		id = _id;
 		texture = *_texture;
@@ -21,7 +21,7 @@ public:
 	//{
 
 	//}
-	inline virtual void Draw(double dt)
+	virtual void Draw(double dt)
 	{
 		//Prepare transformations
 		shader.UseProgram();

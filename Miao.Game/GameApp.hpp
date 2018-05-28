@@ -1,5 +1,5 @@
 ﻿#pragma once
-#include <game.hpp>
+#include <Miao.Core/game.hpp>
 
 extern Game* game;
 
@@ -20,15 +20,15 @@ public:
 		FT_Face noto = MResourceLoader::LoadFont("Fonts/NotoSansCJK-Regular.ttc");
 
 		//render text test
-		//MText* fpsCounter = game->renderer.CreateText(notoSans, L"", Rect(0, 0, 200, 30), 16, glm::vec3(0.5, 0.8f, 0.2f), &textShader, GL_STREAM_DRAW);
-		game->renderer.CreateText(noto, L"ABCabc", Rect(0, 0, 200, 30), 12, glm::vec3(0.5f, 0.8f, 0.2f), &textShader);
-		game->renderer.CreateText(noto, L"简体字测试", Rect(200, 0, 200, 30), 12, glm::vec3(0.5f, 0.8f, 0.2f), &textShader);
-		game->renderer.CreateText(noto, L"繁體字測試", Rect(400, 0, 200, 30), 12, glm::vec3(0.5f, 0.8f, 0.2f), &textShader);
-		game->renderer.CreateText(noto, L"日本語テスト", Rect(600, 0, 200, 30), 12, glm::vec3(0.5f, 0.8f, 0.2f), &textShader);
-		game->renderer.CreateText(noto, L"한국어시험", Rect(800, 0, 200, 30), 12, glm::vec3(0.5f, 0.8f, 0.2f), &textShader); 
-		game->renderer.CreateText(noto, L"Spine And Input Test: ←:Run(Left) →:Run(Right) ↑:Jump ↓:Lie Down", Rect(0, 380, 600, 30), 12, glm::vec3(0.5f, 0.8f, 0.2f), &textShader);
-		game->renderer.CreateText(noto, L"Sprite Animation:", Rect(0, 60, 300, 30), 12, glm::vec3(0.5f, 0.8f, 0.2f), &textShader);
-		game->renderer.CreateText(noto, L"Scale & Rotation:", Rect(260, 60, 300, 30), 12, glm::vec3(0.5f, 0.8f, 0.2f), &textShader);
+		//MText* fpsCounter = game->renderer.CreateText(notoSans, L"", MRect(0, 0, 200, 30), 16, glm::vec3(0.5, 0.8f, 0.2f), &textShader, GL_STREAM_DRAW);
+		game->renderer.CreateText(noto, L"ABCabc", MRect(0, 0, 200, 30), 12, glm::vec3(0.5f, 0.8f, 0.2f), &textShader);
+		game->renderer.CreateText(noto, L"简体字测试", MRect(200, 0, 200, 30), 12, glm::vec3(0.5f, 0.8f, 0.2f), &textShader);
+		game->renderer.CreateText(noto, L"繁體字測試", MRect(400, 0, 200, 30), 12, glm::vec3(0.5f, 0.8f, 0.2f), &textShader);
+		game->renderer.CreateText(noto, L"日本語テスト", MRect(600, 0, 200, 30), 12, glm::vec3(0.5f, 0.8f, 0.2f), &textShader);
+		game->renderer.CreateText(noto, L"한국어시험", MRect(800, 0, 200, 30), 12, glm::vec3(0.5f, 0.8f, 0.2f), &textShader); 
+		game->renderer.CreateText(noto, L"Spine And Input Test: ←:Run(Left) →:Run(Right) ↑:Jump ↓:Lie Down", MRect(0, 380, 600, 30), 12, glm::vec3(0.5f, 0.8f, 0.2f), &textShader);
+		game->renderer.CreateText(noto, L"Sprite Animation:", MRect(0, 60, 300, 30), 12, glm::vec3(0.5f, 0.8f, 0.2f), &textShader);
+		game->renderer.CreateText(noto, L"Scale & Rotation:", MRect(260, 60, 300, 30), 12, glm::vec3(0.5f, 0.8f, 0.2f), &textShader);
 		//load shader resources
 		Shader& defaultShader = MResourceLoader::LoadShader("Shaders/default_vertex.glsl", "Shaders/default_fragment.glsl", nullptr);
 		defaultShader.UseProgram().SetInteger("mainTexture", 0);
@@ -36,15 +36,15 @@ public:
 
 		//Texture test
 		Texture2D& tex01 = MResourceLoader::LoadTexture("Textures/01.png", true);
-		rotImage = game->renderer.CreateImage(&tex01, Rect(600, 80, 256, 256), 0.5f, Vec3(1, 1, 1), &defaultShader);
-		game->renderer.CreateImage(&tex01, Rect(300, 80, 128, 128), 0, Vec3(1, 1, 1), &defaultShader);
+		rotImage = game->renderer.CreateImage(&tex01, MRect(600, 80, 256, 256), 0.5f, Vec3(1, 1, 1), &defaultShader);
+		game->renderer.CreateImage(&tex01, MRect(300, 80, 128, 128), 0, Vec3(1, 1, 1), &defaultShader);
 
 		//sprite animation test
 		Texture2D& anim01 = MResourceLoader::LoadTexture("Textures/sprite1.png", true);
 		Shader& spriteSheetShader = MResourceLoader::LoadShader("Shaders/spritesheet_vertex.glsl", "Shaders/spritesheet_fragment.glsl", nullptr);
 		spriteSheetShader.UseProgram().SetInteger("mainTexture", 0);
 		spriteSheetShader.SetMatrix4("projection", game->projection);
-		game->renderer.CreateSpriteSheetAnimation(&anim01, Rect(100, 100, 50, 50), Vec2(0.1f, 0.1667f), 0, Vec3(1, 1, 1), &spriteSheetShader);
+		game->renderer.CreateSpriteSheetAnimation(&anim01, MRect(100, 100, 50, 50), Vec2(0.1f, 0.1667f), 0, Vec3(1, 1, 1), &spriteSheetShader);
 
 		//load shader resources
 		Shader& meshShader = MResourceLoader::LoadShader("Shaders/mesh_vertex.glsl", "Shaders/mesh_fragment.glsl", nullptr);

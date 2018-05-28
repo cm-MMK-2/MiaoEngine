@@ -9,6 +9,16 @@
 #define MINPUT_JOYSTICK 0x04
 #define MINPUT_ALL 0x07
 typedef std::function<void(uint32_t)> KeyEvent;
+
+
+class MMouseInput
+{
+public:
+	double x;
+	double y;
+
+};
+
 /*
  * Input Module
  * keyboard input
@@ -18,7 +28,37 @@ typedef std::function<void(uint32_t)> KeyEvent;
 class MInput
 {
 public:
-	MInput(GLFWwindow* window, int modules, KeyEvent onKeyDown = nullptr, KeyEvent onKeyUp = nullptr)
+	static MInput* Init(GLFWwindow* window, int modules) {
+		if (!instance) {
+			instance = new MInput(window, modules);
+		}
+		return instance;
+	}
+
+	static void Dispose() {
+		if (instance) {
+			delete instance;
+		}
+	}
+
+	static MInput* Get() {
+		return instance;
+	}
+
+	static KeyEvent OnKeyDown;
+	static KeyEvent OnKeyUp;
+
+	static void SetKeyEventListener(KeyEvent onKeyDown, KeyEvent onKeyUp)
+	{
+		OnKeyDown = onKeyDown;
+		OnKeyUp = onKeyUp;
+	}
+
+private:
+
+	static MInput* instance;
+
+	MInput(GLFWwindow* window, int modules)
 	{
 		using namespace std;
 		if ((modules & MINPUT_KEYBOARD) == MINPUT_KEYBOARD)
@@ -36,7 +76,7 @@ public:
 							{
 								OnKeyDown(keyPair.first);
 							}
-							
+
 							cout << "DEBUG::MInput:Defined Key[" << keyPair.first << "] pressed" << endl;
 							break;
 						}
@@ -66,10 +106,11 @@ public:
 		if ((modules & MINPUT_MOUSE) == MINPUT_MOUSE)
 		{
 			cout << "DEBUG::MInput:Init mouse input" << endl;
+			mouseInput = new MMouseInput();
 			//cursor move
 			glfwSetCursorPosCallback(window, [](GLFWwindow* window, double xpos, double ypos)
 			{
-				cout << "DEBUG::MInput:Mouse move to " << xpos << ", "<< ypos << endl;
+				cout << "DEBUG::MInput:Mouse move to " << xpos << ", " << ypos << endl;
 			});
 			//mouse button
 			glfwSetMouseButtonCallback(window, [](GLFWwindow* window, int button, int action, int mods)
@@ -78,7 +119,7 @@ public:
 				{
 					cout << "DEBUG::MInput:Left button pressed" << endl;
 				}
-					
+
 			});
 			//mouse scroll
 			glfwSetScrollCallback(window, [](GLFWwindow* window, double xoffset, double yoffset)
@@ -102,7 +143,7 @@ public:
 			{
 				axesPos = glfwGetJoystickAxes(GLFW_JOYSTICK_1, &axesCount);
 				buttons = glfwGetJoystickButtons(GLFW_JOYSTICK_1, &buttonCount);
-				cout << "DEBUG::MInput:Joystick has " << axesCount << " axes and " << buttonCount << " buttons in total"<<endl;
+				cout << "DEBUG::MInput:Joystick has " << axesCount << " axes and " << buttonCount << " buttons in total" << endl;
 			}
 			else
 			{
@@ -118,19 +159,19 @@ public:
 		}
 	}
 
-	static KeyEvent OnKeyDown;
-	static KeyEvent OnKeyUp;
-
-	void SetKeyEventListener(KeyEvent onKeyDown, KeyEvent onKeyUp)
+	~MInput()
 	{
-		OnKeyDown = onKeyDown;
-		OnKeyUp = onKeyUp;
+		if (mouseInput)
+		{
+			delete mouseInput;
+		}
 	}
-private:
+
+	MMouseInput* mouseInput = nullptr;
 	const float* axesPos;
 	const unsigned char* buttons;
-
 };
 
+MInput* MInput::instance = nullptr;
 KeyEvent MInput::OnKeyDown = nullptr;
 KeyEvent MInput::OnKeyUp = nullptr;

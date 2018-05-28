@@ -14,7 +14,6 @@
 #include "MResourceLoader.hpp"
 #include "MRenderQueue.hpp"
 #include "MInput.hpp"
-#include <windows.h>
 #include <GL/wglext.h>
 
 class MGameBase
@@ -55,7 +54,7 @@ public: //--------------------------------------------------------public
 	MRenderQueue renderer;
 
 	//create game instance
-	static int Create(GLuint width = 800, GLuint height = 600, const char* title = u8"Game", MGameBase* gameApp = nullptr);
+	static int Create(GLuint width = 800, GLuint height = 600, MGameBase* gameApp = nullptr);
 
 	/*
 	 * VSync switch
@@ -91,6 +90,12 @@ public: //--------------------------------------------------------public
 		MInput::OnKeyUp = onKeyUp;
 	}
 
+	int CreateGameWindow(const char* title);
+
+	GLuint CreateSceneTexture(GLFWwindow* _window);
+
+	void RenderSceneTexture(float deltaTime);
+
 private: //------------------------------------------------------private
 	MText fpsCounter;
 	MInput* mInput;
@@ -103,8 +108,6 @@ private: //------------------------------------------------------private
 		this->height = _height;
 	}
 
-	int CreateGameWindow(const char* title);
-
 	Game(Game&) = delete;//disable copy
 };
 
@@ -113,7 +116,7 @@ Game* game = nullptr;
 std::shared_ptr<spdlog::logger> Game::rotating_logger;
 
 //-------------implementations
-int Game::Create(GLuint width, GLuint height, const char* title, MGameBase* gameApp)
+int Game::Create(GLuint width, GLuint height, MGameBase* gameApp)
 {
 	if (!game)
 	{
@@ -121,7 +124,7 @@ int Game::Create(GLuint width, GLuint height, const char* title, MGameBase* game
 		game->mGameApp = gameApp;
 		//rotating_logger = spdlog::rotating_logger_mt("file_logger", "logs/log", 1048576 * 5, 3);
 		//rotating_logger->info("Start Game");
-		return game->CreateGameWindow(title);
+		return 0;
 	}
 	else
 	{
@@ -135,13 +138,17 @@ int Game::Create(GLuint width, GLuint height, const char* title, MGameBase* game
 
 int Game::CreateGameWindow(const char* title)
 {
-	std::cout << "Starting GLFW context, OpenGL 3.3" << std::endl;
+	std::cout << "Starting GLFW context...\n";
 	// Init GLFW
 	glfwInit();
-	// Set all the required options for GLFW
+#if __APPLE__
+	// For mac os
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
+#endif
+
 	glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
 
 	// Create a GLFWwindow object that we can use for GLFW's functions
@@ -153,6 +160,8 @@ int Game::CreateGameWindow(const char* title)
 		return -1;
 	}
 	glfwMakeContextCurrent(mWindow);
+
+	std::cout << "OpenGL " <<  glGetString(GL_VERSION) << ", GLSL " << glGetString(GL_SHADING_LANGUAGE_VERSION) << std::endl;
 
 	// Set this to true so GLEW knows to use a modern approach to retrieving function pointers and extensions
 	glewExperimental = GL_TRUE;
@@ -176,7 +185,7 @@ int Game::CreateGameWindow(const char* title)
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 
-	mInput = new MInput(mWindow, MINPUT_KEYBOARD | MINPUT_JOYSTICK);
+	mInput = MInput::Init(mWindow, MINPUT_KEYBOARD | MINPUT_JOYSTICK);
 
 	renderer.Init();
 
@@ -218,6 +227,68 @@ int Game::CreateGameWindow(const char* title)
 		glfwSwapBuffers(mWindow);
 	}
 
+	mInput->Dispose();
 	renderer.Release();
 	return 0;
+}
+
+
+static GLuint fbo;
+static GLuint rbo;
+static GLuint texture;
+
+GLuint Game::CreateSceneTexture(GLFWwindow* _window)
+{
+	// Set OpenGL options
+	//glEnable(GL_CULL_FACE);
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+	mInput = MInput::Init(_window, MINPUT_KEYBOARD | MINPUT_JOYSTICK);
+
+	renderer.Init();
+	//game projection
+	projection = glm::ortho(0.0f, static_cast<GLfloat>(this->width),
+		static_cast<GLfloat>(this->height), 0.0f, -1.0f, 1.0f);
+	mGameApp->OnInit();
+
+	glGenTextures(1, &texture);
+	glBindTexture(GL_TEXTURE_2D, texture);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, 0);
+
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+
+	glGenFramebuffers(1, &fbo);
+	glBindFramebuffer(GL_FRAMEBUFFER, fbo);
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, texture, 0);
+
+	glGenRenderbuffers(1, &rbo);
+	glBindRenderbuffer(GL_RENDERBUFFER, rbo);
+	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT, width, height);
+	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, rbo);
+
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+	glBindRenderbuffer(GL_RENDERBUFFER, 0);
+	return texture;
+}
+
+void Game::RenderSceneTexture(float deltaTime)
+{
+	if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
+		return;
+	mGameApp->OnUpdate(deltaTime);
+	// Render to our framebuffer
+	glBindFramebuffer(GL_FRAMEBUFFER, fbo);
+	glBindRenderbuffer(GL_FRAMEBUFFER, rbo);
+	glViewport(0, 0, width, height); // Render on the whole framebuffer, complete from the lower left corner to the upper right
+	//clear the ouput texture
+	glClearColor(0.0, 0.0, 0.0, 0.0);
+	glClearDepth(1.0f);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	renderer.Render(deltaTime);
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+	glBindRenderbuffer(GL_FRAMEBUFFER, 0);
 }

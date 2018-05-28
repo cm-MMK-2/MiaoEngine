@@ -5,7 +5,7 @@ class MSpriteSheetAnimation :public MImage
 {
 public:
 	MSpriteSheetAnimation(const MSpriteSheetAnimation & copy) = delete;
-	MSpriteSheetAnimation(Texture2D* _texture, Rect _rect, Vec2 _block, GLfloat _rotation, glm::vec3 _color, Shader* _shader, unsigned long _id):MImage(_texture, _rect, _rotation, _color, _shader, _id)
+	MSpriteSheetAnimation(Texture2D* _texture, MRect _rect, Vec2 _block, GLfloat _rotation, glm::vec3 _color, Shader* _shader, unsigned long _id):MImage(_texture, _rect, _rotation, _color, _shader, _id)
 	{
 		id = _id;
 		texture = *_texture;
@@ -43,7 +43,7 @@ public:
 	//{
 
 	//}
-	inline virtual void Draw(double dt)
+	virtual void Draw(double dt)
 	{
 
 		pTime += dt;

@@ -17,9 +17,6 @@
     <Filter Include="input">
       <UniqueIdentifier>{8a9927fa-708e-4934-b7d6-a782035cb651}</UniqueIdentifier>
     </Filter>
-    <Filter Include="collision">
-      <UniqueIdentifier>{6bbf6a3d-d2f7-4201-bb38-923d5d7d8280}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MResourceLoader.hpp">
@@ -69,12 +66,6 @@
     </ClInclude>
     <ClInclude Include="MInput.hpp">
       <Filter>input</Filter>
-    </ClInclude>
-    <ClInclude Include="MCollisionCalculator.hpp">
-      <Filter>collision</Filter>
-    </ClInclude>
-    <ClInclude Include="Collider\MCollider.hpp">
-      <Filter>collision</Filter>
     </ClInclude>
     <ClInclude Include="game.hpp" />
   </ItemGroup>

@@ -4,7 +4,7 @@
 class MQuad : public MObject
 {
 public:
-	Rect rect;
+	MRect rect;
 	virtual void Draw(double dt) = 0;
 	static void CreateQuadVAO()
 	{

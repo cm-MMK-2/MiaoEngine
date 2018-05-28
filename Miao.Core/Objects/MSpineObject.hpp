@@ -7,7 +7,7 @@
 
 //spine implemetation
 char* _spUtil_readFile(const char* path, int* length) {
-	return _readFile(path, length);
+	return _spReadFile(path, length);
 }
 
 void _spAtlasPage_createTexture(spAtlasPage* self, const char* path) {
@@ -189,10 +189,10 @@ private:
 			// and the slot's color. Each color channel is given in the
 			// range [0-1], you may have to multiply by 255 and cast to
 			// and int if your engine uses integer ranges for color channels.
-			float tintR = skeleton->r * slot->r;
-			float tintG = skeleton->g * slot->g;
-			float tintB = skeleton->b * slot->b;
-			float tintA = skeleton->a * slot->a;
+			float tintR = skeleton->color.r * slot->color.r;
+			float tintG = skeleton->color.g * slot->color.g;
+			float tintB = skeleton->color.b * slot->color.b;
+			float tintA = skeleton->color.a * slot->color.a;
 
 			// Fill the vertices array depending on the type of attachment
 			Texture2D* texture = nullptr;
@@ -211,32 +211,32 @@ private:
 				// the rectangular region attachment. This assumes the world transform of the
 				// bone to which the slot (and hence attachment) is attached has been calculated
 				// before rendering via spSkeleton_updateWorldTransform
-				spRegionAttachment_computeWorldVertices(regionAttachment, slot->bone, worldVerticesPositions);
+				spRegionAttachment_computeWorldVertices(regionAttachment, slot->bone, worldVerticesPositions, 0, 2);
 
 				// Create 2 triangles, with 3 vertices each from the region's
 				// world vertex positions and its UV coordinates (in the range [0-1]).
-				addVertex(worldVerticesPositions[SP_VERTEX_X1], worldVerticesPositions[SP_VERTEX_Y1],
-					regionAttachment->uvs[SP_VERTEX_X1], regionAttachment->uvs[SP_VERTEX_Y1],
+				addVertex(worldVerticesPositions[0], worldVerticesPositions[1],
+					regionAttachment->uvs[0], regionAttachment->uvs[1],
 					tintR, tintG, tintB, tintA, &vertexIndex);
 
-				addVertex(worldVerticesPositions[SP_VERTEX_X2], worldVerticesPositions[SP_VERTEX_Y2],
-					regionAttachment->uvs[SP_VERTEX_X2], regionAttachment->uvs[SP_VERTEX_Y2],
+				addVertex(worldVerticesPositions[2], worldVerticesPositions[3],
+					regionAttachment->uvs[2], regionAttachment->uvs[3],
 					tintR, tintG, tintB, tintA, &vertexIndex);
 
-				addVertex(worldVerticesPositions[SP_VERTEX_X3], worldVerticesPositions[SP_VERTEX_Y3],
-					regionAttachment->uvs[SP_VERTEX_X3], regionAttachment->uvs[SP_VERTEX_Y3],
+				addVertex(worldVerticesPositions[4], worldVerticesPositions[5],
+					regionAttachment->uvs[4], regionAttachment->uvs[5],
 					tintR, tintG, tintB, tintA, &vertexIndex);
 
-				addVertex(worldVerticesPositions[SP_VERTEX_X1], worldVerticesPositions[SP_VERTEX_Y1],
-					regionAttachment->uvs[SP_VERTEX_X1], regionAttachment->uvs[SP_VERTEX_Y1],
+				addVertex(worldVerticesPositions[4], worldVerticesPositions[5],
+					regionAttachment->uvs[4], regionAttachment->uvs[5],
 					tintR, tintG, tintB, tintA, &vertexIndex);
 
-				addVertex(worldVerticesPositions[SP_VERTEX_X3], worldVerticesPositions[SP_VERTEX_Y3],
-					regionAttachment->uvs[SP_VERTEX_X3], regionAttachment->uvs[SP_VERTEX_Y3],
+				addVertex(worldVerticesPositions[6], worldVerticesPositions[7],
+					regionAttachment->uvs[6], regionAttachment->uvs[7],
 					tintR, tintG, tintB, tintA, &vertexIndex);
 
-				addVertex(worldVerticesPositions[SP_VERTEX_X4], worldVerticesPositions[SP_VERTEX_Y4],
-					regionAttachment->uvs[SP_VERTEX_X4], regionAttachment->uvs[SP_VERTEX_Y4],
+				addVertex(worldVerticesPositions[0], worldVerticesPositions[1],
+					regionAttachment->uvs[0], regionAttachment->uvs[1],
 					tintR, tintG, tintB, tintA, &vertexIndex);
 			}
 			else if (attachment->type == SP_ATTACHMENT_MESH) {
@@ -259,7 +259,7 @@ private:
 				// the rectangular region attachment. This assumes the world transform of the
 				// bone to which the slot (and hence attachment) is attached has been calculated
 				// before rendering via spSkeleton_updateWorldTransform
-				spMeshAttachment_computeWorldVertices(mesh, slot, worldVerticesPositions);
+				spVertexAttachment_computeWorldVertices(SUPER(mesh), slot, 0, mesh->super.worldVerticesLength, worldVerticesPositions, 0, 2);
 
 				// Mesh attachments use an array of vertices, and an array of indices to define which
 				// 3 vertices make up each triangle. We loop through all triangle indices
@@ -321,7 +321,7 @@ private:
 		glBindVertexArray(0);
 	}
 
-	spAnimation **GetAnimations(uint32_t* count)
+	spAnimation **GetAnimations(size_t* count)
 	{
 		spSkeletonData* spdata = skeleton->data;
 		*count = spdata->animationsCount;
